@@ -44,8 +44,8 @@ function Login() {
 
   return (
     <div>
-      <a className="font-light text-3xl text-secondary">
-        Lets Log you in quickly
+      <a className="font-light text-2xl text-secondary">
+        Let's log you in quickly
       </a>
       <InputBar
         placeholder="Email Address"

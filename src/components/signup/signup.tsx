@@ -54,8 +54,8 @@ function Signup() {
 
   return (
     <div>
-      <a className="font-light text-3xl text-secondary">
-        Lets Sign you up quickly
+      <a className="font-light text-2xl text-secondary">
+        Let's sign you up quickly
       </a>
       <InputBar
         placeholder="Full Name"
