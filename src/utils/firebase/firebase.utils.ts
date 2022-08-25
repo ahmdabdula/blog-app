@@ -57,7 +57,7 @@ const generateErrorMessage = (code: string) => {
     case "auth/user-not-found":
       return "user with this email does not exist";
     default:
-      return "error occurred account creation failed";
+      return "error occurred";
   }
 };
 
