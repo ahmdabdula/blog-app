@@ -59,7 +59,7 @@ function Login() {
 
   return (
     <div>
-      <a className="font-light text-3xl text-secondary">
+      <a className="relative font-light text-3xl text-secondary">
         Let's log you in quickly
       </a>
       <InputBar
