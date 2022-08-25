@@ -21,7 +21,7 @@ const defaultFormValidation = {
   name: false,
 };
 
-function Signup() {
+const Signup = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const [formValidation, setFormValidation] = useState(defaultFormValidation);
   const [alertMessage, setAlertError] = useState<string>("");
@@ -131,6 +131,6 @@ function Signup() {
       )}
     </div>
   );
-}
+};
 
 export default Signup;

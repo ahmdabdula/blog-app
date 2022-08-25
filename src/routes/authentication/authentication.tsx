@@ -5,7 +5,7 @@ import Signup from "../../components/signup/signup";
 import { Outlet, useOutletContext } from "react-router-dom";
 import Bkg from "../../images/authentication-bkg.png";
 
-function Authentication() {
+const Authentication = () => {
   const [heading, SetHeading] = useState<string>("Login");
   return (
     <div className="flex w-full h-full">
@@ -27,10 +27,10 @@ function Authentication() {
       </div>
     </div>
   );
-}
+};
 
-export function useUser() {
+export const useUser = () => {
   return useOutletContext<{ heading: string; SetHeading: () => {} }>();
-}
+};
 
 export default Authentication;

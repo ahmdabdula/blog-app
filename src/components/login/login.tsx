@@ -15,7 +15,7 @@ const defaultFormValidation = {
   password: false,
 };
 
-function Login() {
+const Login = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const [alertMessage, setAlertError] = useState<string>("");
   const [alertPop, setAlertPop] = useState<boolean>(false);
@@ -58,8 +58,8 @@ function Login() {
   };
 
   return (
-    <div>
-      <a className="relative font-light text-3xl text-secondary">
+    <div className="relative">
+      <a className="font-light text-3xl text-secondary">
         Let's log you in quickly
       </a>
       <InputBar
@@ -99,6 +99,6 @@ function Login() {
       </div>
     </div>
   );
-}
+};
 
 export default Login;
