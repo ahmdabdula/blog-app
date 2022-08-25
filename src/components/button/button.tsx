@@ -13,7 +13,7 @@ const Button: FC<ButtonProps> = ({ name, ...otherProps }) => {
   return (
     <button
       {...otherProps}
-      className={"lg:w-2/6 w-3/6 p-5 text-white my-6 " + disabledStyle}
+      className={"lg:w-2/6 w-full p-5 text-white my-6 " + disabledStyle}
     >
       <h1 className="font-lexend lg:text-2xl text-xl">{name}</h1>
     </button>

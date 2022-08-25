@@ -12,7 +12,6 @@ const defaultFormFields = {
 const defaultFormValidation = {
   email: false,
   password: false,
-  name: false,
 };
 
 function Login() {
@@ -25,26 +24,26 @@ function Login() {
     useOutletContext();
   DomProps.SetHeading("Login");
 
+  const validateField = (name: string, value: string) => {
+    const { state, message } = checkFieldValidation(name, value);
+    setAlertError(message);
+    setFormValidation({ ...formValidation, [name]: state });
+    setAlertPop(!state);
+  };
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    const { state, message } = checkFieldValidation(name, value);
-    if (!state) {
-      setAlertError(message);
-      setAlertPop(true);
-    } else {
-      setAlertPop(false);
-    }
+    name == "email" && validateField(name, value);
     setFormFields({ ...formFields, [name]: value });
-    setFormValidation({ ...formValidation, [name]: state });
   };
 
   const validateForm = (): boolean => {
-    return formValidation.email && formValidation.password ? true : false;
+    return formValidation.email && password.length > 0 ? true : false;
   };
 
   return (
     <div>
-      <a className="font-light text-2xl text-secondary">
+      <a className="font-light text-3xl text-secondary">
         Let's log you in quickly
       </a>
       <InputBar
@@ -59,7 +58,7 @@ function Login() {
 
       <InputBar
         placeholder="Password"
-        valid={formValidation.password}
+        valid={password.length > 0}
         type="password"
         required
         onChange={handleChange}

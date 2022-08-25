@@ -21,7 +21,7 @@ function Authentication() {
       </div>
       <div className="flex lg:w-4/6 lg:text-left justify-center items-center h-full sm:w-6/6 text-center ">
         <div className="w-5/6">
-          <h1 className="font-dmSerif text-6xl pb-5">Welcome</h1>
+          <h1 className="font-dmSerif lg:text-6xl text-4xl pb-5">Welcome</h1>
           <Outlet context={{ heading, SetHeading }} />
         </div>
       </div>

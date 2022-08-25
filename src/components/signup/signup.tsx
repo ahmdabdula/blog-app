@@ -30,17 +30,17 @@ function Signup() {
     useOutletContext();
   DomProps.SetHeading("Sign Up");
 
+  const validateField = (name: string, value: string) => {
+    const { state, message } = checkFieldValidation(name, value);
+    setAlertError(message);
+    setFormValidation({ ...formValidation, [name]: state });
+    setAlertPop(!state);
+  };
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    const { state, message } = checkFieldValidation(name, value);
-    if (!state) {
-      setAlertError(message);
-      setAlertPop(true);
-    } else {
-      setAlertPop(false);
-    }
+    validateField(name, value);
     setFormFields({ ...formFields, [name]: value });
-    setFormValidation({ ...formValidation, [name]: state });
   };
 
   const validateForm = (): boolean => {
@@ -54,7 +54,7 @@ function Signup() {
 
   return (
     <div>
-      <a className="font-light text-2xl text-secondary">
+      <a className="font-light text-3xl text-secondary">
         Let's sign you up quickly
       </a>
       <InputBar
@@ -88,7 +88,7 @@ function Signup() {
       ></InputBar>
 
       <InputBar
-        placeholder="Password"
+        placeholder="Confirm Password"
         type="password"
         valid={password === confirmPassword && password.length > 0}
         required
