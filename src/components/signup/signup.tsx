@@ -6,7 +6,11 @@ import { useOutletContext } from "react-router-dom";
 import { useUser } from "../../routes/authentication/authentication";
 import { checkFieldValidation } from "../../utils/formValidation";
 import Alert from "../alerts/alert";
-import { createAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
+import {
+  createAuthUserWithEmailAndPassword,
+  createUserDocumentFromAuth,
+} from "../../utils/firebase/firebase.utils";
+import { User } from "firebase/auth";
 
 const defaultFormFields = {
   email: "",
@@ -50,12 +54,19 @@ const Signup = () => {
 
   const handleSubmit = async () => {
     try {
-      await createAuthUserWithEmailAndPassword(email, password);
-      console.log("User Created");
-      resetForm();
+      const userCredential = await createAuthUserWithEmailAndPassword(
+        email,
+        password
+      );
+      if (userCredential) {
+        const { user } = userCredential;
+        await createUserDocumentFromAuth(user, { name });
+        resetForm();
+      }
     } catch (error: unknown) {
       setAlertPop(true);
-      setAlertError(error as string);
+      console.log(error);
+      //setAlertError(error as string);
     }
   };
 

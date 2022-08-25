@@ -10,6 +10,7 @@ import {
   onAuthStateChanged,
   NextOrObserver,
   User,
+  UserCredential,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -31,6 +32,16 @@ const firebaseConfig = {
   storageBucket: "blog-app-90794.appspot.com",
   messagingSenderId: "979226588983",
   appId: "1:979226588983:web:6d1e0778e93992e2e74cb2",
+};
+
+type userAuthType = {
+  uid: string;
+  email: string;
+};
+
+type errorType = {
+  code: string;
+  message: string;
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
@@ -57,7 +68,7 @@ const generateErrorMessage = (code: string) => {
     case "auth/user-not-found":
       return "user with this email does not exist";
     default:
-      return "error occurred account creation failed";
+      return "error occurred";
   }
 };
 
@@ -70,8 +81,34 @@ export const createAuthUserWithEmailAndPassword = async (
   try {
     return await createUserWithEmailAndPassword(auth, email, password);
   } catch (error) {
-    const code = (error as { code: string }).code;
+    const code = (error as errorType).code;
     throw generateErrorMessage(code);
+  }
+};
+
+export const createUserDocumentFromAuth = async (
+  userAuth: User,
+  additionalInformation = {}
+) => {
+  if (!userAuth) return;
+
+  const userDocRef = doc(db, "users", userAuth.uid);
+
+  const userSnapshot = await getDoc(userDocRef);
+
+  if (!userSnapshot.exists()) {
+    const { email } = userAuth;
+    const createdAt = new Date();
+
+    try {
+      await setDoc(userDocRef, {
+        email,
+        createdAt,
+        ...additionalInformation,
+      });
+    } catch (error: unknown) {
+      throw (error as errorType).message;
+    }
   }
 };
 

@@ -14,7 +14,6 @@ const Button: FC<ButtonProps> = ({ name, ...otherProps }) => {
   return (
     <button
       onClick={() => {
-        console.log("helloo");
         otherProps.onPress();
       }}
       {...otherProps}
