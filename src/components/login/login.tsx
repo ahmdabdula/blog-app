@@ -4,6 +4,7 @@ import Button from "../button/button";
 import InputBar from "../forminput/inputbar";
 import { checkFieldValidation } from "../../utils/formValidation";
 import Alert from "../alerts/alert";
+import { signInAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
 const defaultFormFields = {
   email: "",
   password: "",
@@ -29,6 +30,21 @@ function Login() {
     setAlertError(message);
     setFormValidation({ ...formValidation, [name]: state });
     setAlertPop(!state);
+  };
+
+  const resetForm = () => {
+    setFormFields(defaultFormFields);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      await signInAuthUserWithEmailAndPassword(email, password);
+      console.log("logged in");
+      resetForm();
+    } catch (error: unknown) {
+      setAlertPop(true);
+      setAlertError(error as string);
+    }
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -66,7 +82,11 @@ function Login() {
         value={password}
       ></InputBar>
 
-      <Button disabled={!validateForm()} name="LOGIN"></Button>
+      <Button
+        onPress={handleSubmit}
+        disabled={!validateForm()}
+        name="LOGIN"
+      ></Button>
 
       <div>
         <a className="text-xl hover:opacity-75">Don't have an account?</a>

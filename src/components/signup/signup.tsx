@@ -6,6 +6,7 @@ import { useOutletContext } from "react-router-dom";
 import { useUser } from "../../routes/authentication/authentication";
 import { checkFieldValidation } from "../../utils/formValidation";
 import Alert from "../alerts/alert";
+import { createAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
 
 const defaultFormFields = {
   email: "",
@@ -30,6 +31,10 @@ function Signup() {
     useOutletContext();
   DomProps.SetHeading("Sign Up");
 
+  const resetForm = () => {
+    setFormFields(defaultFormFields);
+  };
+
   const validateField = (name: string, value: string) => {
     const { state, message } = checkFieldValidation(name, value);
     setAlertError(message);
@@ -41,6 +46,17 @@ function Signup() {
     const { name, value } = event.target;
     validateField(name, value);
     setFormFields({ ...formFields, [name]: value });
+  };
+
+  const handleSubmit = async () => {
+    try {
+      await createAuthUserWithEmailAndPassword(email, password);
+      console.log("User Created");
+      resetForm();
+    } catch (error: unknown) {
+      setAlertPop(true);
+      setAlertError(error as string);
+    }
   };
 
   const validateForm = (): boolean => {
@@ -97,7 +113,11 @@ function Signup() {
         value={confirmPassword}
       ></InputBar>
 
-      <Button disabled={!validateForm()} name="SUBMIT"></Button>
+      <Button
+        disabled={!validateForm()}
+        onPress={handleSubmit}
+        name="SUBMIT"
+      ></Button>
 
       <Link to={"/"}>
         <h1 className="text-xl hover:opacity-75">
