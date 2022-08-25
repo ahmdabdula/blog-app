@@ -5,7 +5,7 @@ import Authentication from "./routes/authentication/authentication";
 import Login from "./components/login/login";
 import Signup from "./components/signup/signup";
 
-function App() {
+const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Authentication />}>
@@ -14,6 +14,6 @@ function App() {
       </Route>
     </Routes>
   );
-}
+};
 
 export default App;

@@ -9,7 +9,7 @@ const Alert = ({
 }) => {
   return (
     <div
-      className="bg-red-100 mt-2 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+      className="fixed lg:w-3/6 w-5/6 bottom-4 bg-red-100 mt-2 border border-red-400 text-red-700 px-4 py-3 rounded"
       role="alert"
     >
       <span className="block sm:inline">{message}</span>
