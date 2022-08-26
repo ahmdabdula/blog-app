@@ -5,7 +5,7 @@ import InputBar from "../../Components/Forminput/inputBar";
 import Alert from "../../Components/Alerts/alert";
 import Authentication from "../../Components/Authentication/authentication";
 import { checkFieldValidation } from "../../Utils/formValidation";
-import { createAuthUserWithEmailAndPassword } from "../../Utils/firebase/firebase.utils";
+import { createAuthUserWithEmailAndPassword } from "../../Utils/Firebase/firebase.utils";
 const defaultFormFields = {
   email: "",
   password: "",
