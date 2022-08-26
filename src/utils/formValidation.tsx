@@ -1,5 +1,3 @@
-import React from "react";
-
 export const checkFieldValidation = (name: string, value: string) => {
   switch (name) {
     case "email":
@@ -12,7 +10,6 @@ export const checkFieldValidation = (name: string, value: string) => {
       ) {
         return { state: true, message: "success" };
       } else return { state: false, message: "Email Must be Correct" };
-      break;
     case "password":
       if (value.length > 6) {
         return { state: true, message: "success" };
