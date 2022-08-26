@@ -1,19 +1,15 @@
-import { ReactComponentElement, useEffect } from "react";
 import { InputHTMLAttributes, FC } from "react";
-import { useState } from "react";
 
 type FormInputProps = {
   placeholder: string;
-  valid: boolean;
+  isValid: boolean;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 const InputBar: FC<FormInputProps> = ({ placeholder, ...otherProps }) => {
   let border: string;
-  if (otherProps.valid) {
-    border = "border-primary";
-  } else {
-    border = "border-secondary";
-  }
+  otherProps.isValid
+    ? (border = "border-primary")
+    : (border = "border-secondary");
 
   return (
     <input
@@ -22,7 +18,7 @@ const InputBar: FC<FormInputProps> = ({ placeholder, ...otherProps }) => {
       }
       placeholder={placeholder}
       {...otherProps}
-    ></input>
+    />
   );
 };
 

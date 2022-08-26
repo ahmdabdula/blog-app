@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import Login from "../../components/login/login";
+import Login from "../login/login";
 import Signup from "../../components/signup/signup";
 import { Outlet, useOutletContext } from "react-router-dom";
 import Bkg from "../../images/authentication-bkg.png";

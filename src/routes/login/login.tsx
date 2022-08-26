@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
-import Button from "../button/button";
-import InputBar from "../forminput/inputbar";
+import Button from "../../Components/button/button";
+import InputBar from "../../Components/forminput/inputbar";
 import { checkFieldValidation } from "../../utils/formValidation";
-import Alert from "../alerts/alert";
+import Alert from "../../Components/alerts/alert";
 import { signInAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
 const defaultFormFields = {
   email: "",
