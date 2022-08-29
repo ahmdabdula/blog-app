@@ -1,11 +1,14 @@
 import { ChangeEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../Components/Button/button";
-import InputBar from "../../Components/forminput/inputBar";
+import InputBar from "../../Components/Forminput/inputBar";
 import Alert from "../../Components/Alerts/alert";
 import Authentication from "../../Components/Authentication/authentication";
 import { checkFieldValidation } from "../../Utils/formValidation";
-import { createAuthUserWithEmailAndPassword } from "../../Utils/Firebase/firebase.utils";
+import {
+  createAuthUserWithEmailAndPassword,
+  createUserDocumentFromAuth,
+} from "../../Utils/Firebase/firebase";
 const defaultFormFields = {
   email: "",
   password: "",
@@ -26,6 +29,8 @@ const Signup = () => {
   const [alertPop, setAlertPop] = useState<boolean>(false);
   const { email, password, name, confirmPassword } = formFields;
 
+  let navigate = useNavigate();
+
   const resetForm = () => {
     setFormFields(defaultFormFields);
   };
@@ -39,9 +44,16 @@ const Signup = () => {
 
   const handleSubmit = async () => {
     try {
-      await createAuthUserWithEmailAndPassword(email, password);
-      console.log("User Created");
+      const userCredential = await createAuthUserWithEmailAndPassword(
+        email,
+        password,
+        name
+      );
+      if (userCredential) {
+        await createUserDocumentFromAuth(userCredential, { name });
+      }
       resetForm();
+      navigate("/login");
     } catch (error: unknown) {
       setAlertPop(true);
       setAlertError(error as string);

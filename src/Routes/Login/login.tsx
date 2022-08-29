@@ -1,11 +1,13 @@
-import { ChangeEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { ChangeEvent, useState, useContext } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import Button from "../../Components/Button/button";
 import Alert from "../../Components/Alerts/alert";
 import Authentication from "../../Components/Authentication/authentication";
 import { checkFieldValidation } from "../../Utils/formValidation";
-import InputBar from "../../Components/forminput/inputBar";
-import { signInAuthUserWithEmailAndPassword } from "../../Utils/Firebase/firebase.utils";
+import InputBar from "../../Components/Forminput/inputBar";
+import { signInAuthUserWithEmailAndPassword } from "../../Utils/Firebase/firebase";
+import { UserContext } from "../../Context/userContext";
+
 const defaultFormFields = {
   email: "",
   password: "",
@@ -22,6 +24,9 @@ const Login = () => {
   const [alertPop, setAlertPop] = useState<boolean>(false);
   const [formValidation, setFormValidation] = useState(defaultFormValidation);
   const { email, password } = formFields;
+  const { currentUser } = useContext(UserContext);
+
+  let navigate = useNavigate();
 
   const resetForm = () => {
     setFormFields(defaultFormFields);
@@ -30,7 +35,7 @@ const Login = () => {
   const handleSubmit = async () => {
     try {
       await signInAuthUserWithEmailAndPassword(email, password);
-      console.log("logged in");
+      navigate("/");
       resetForm();
     } catch (error: unknown) {
       setAlertPop(true);
@@ -56,48 +61,54 @@ const Login = () => {
   };
 
   return (
-    <Authentication>
-      <div className="relative">
-        <a className="font-light text-3xl text-secondary">
-          Let's log you in quickly
-        </a>
-        <InputBar
-          placeholder="Email Address"
-          type="email"
-          isValid={formValidation.email}
-          onChange={handleChange}
-          required
-          name="email"
-          value={email}
-        ></InputBar>
+    <>
+      {currentUser ? (
+        <Navigate to="/" />
+      ) : (
+        <Authentication>
+          <div className="relative">
+            <a className="font-light text-3xl text-secondary">
+              Let's log you in quickly
+            </a>
+            <InputBar
+              placeholder="Email Address"
+              type="email"
+              isValid={formValidation.email}
+              onChange={handleChange}
+              required
+              name="email"
+              value={email}
+            ></InputBar>
 
-        <InputBar
-          placeholder="Password"
-          isValid={password.length > 0}
-          type="password"
-          required
-          onChange={handleChange}
-          name="password"
-          value={password}
-        ></InputBar>
+            <InputBar
+              placeholder="Password"
+              isValid={password.length > 0}
+              type="password"
+              required
+              onChange={handleChange}
+              name="password"
+              value={password}
+            ></InputBar>
 
-        <Button
-          onPress={handleSubmit}
-          disabled={!validateForm()}
-          name="LOGIN"
-        ></Button>
+            <Button
+              onPress={handleSubmit}
+              disabled={!validateForm()}
+              name="LOGIN"
+            ></Button>
 
-        <div>
-          <a className="text-xl hover:opacity-75">Don't have an account?</a>
-          <Link className="text-xl text-primary px-2 " to={"/signup"}>
-            Sign-up
-          </Link>
-          {alertPop && (
-            <Alert closeAlert={setAlertPop} message={alertMessage}></Alert>
-          )}
-        </div>
-      </div>
-    </Authentication>
+            <div>
+              <a className="text-xl hover:opacity-75">Don't have an account?</a>
+              <Link className="text-xl text-primary px-2 " to={"/signup"}>
+                Sign-up
+              </Link>
+              {alertPop && (
+                <Alert closeAlert={setAlertPop} message={alertMessage}></Alert>
+              )}
+            </div>
+          </div>
+        </Authentication>
+      )}
+    </>
   );
 };
 

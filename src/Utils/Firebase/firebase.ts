@@ -4,6 +4,9 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   User,
+  updateProfile,
+  NextOrObserver,
+  onAuthStateChanged,
 } from "firebase/auth";
 import { getFirestore, getDoc, setDoc, doc } from "firebase/firestore";
 
@@ -56,12 +59,19 @@ const generateErrorMessage = (code: string) => {
 
 export const createAuthUserWithEmailAndPassword = async (
   email: string,
-  password: string
+  password: string,
+  name: string
 ) => {
   if (!email || !password) return;
 
   try {
-    return await createUserWithEmailAndPassword(auth, email, password);
+    await createUserWithEmailAndPassword(auth, email, password);
+    if (auth.currentUser) {
+      updateProfile(auth.currentUser, {
+        displayName: name,
+      });
+    }
+    return auth.currentUser;
   } catch (error) {
     const code = (error as errorType).code;
     throw generateErrorMessage(code);
@@ -103,7 +113,9 @@ export const signInAuthUserWithEmailAndPassword = async (
     return await signInWithEmailAndPassword(auth, email, password);
   } catch (error) {
     const code = (error as { code: string }).code;
-    console.log(code);
     throw generateErrorMessage(code);
   }
 };
+
+export const onAuthStateChangedListener = (callback: NextOrObserver<User>) =>
+  onAuthStateChanged(auth, callback);
