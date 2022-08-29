@@ -1,10 +1,10 @@
 import { ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../../Components/Button/button";
-import InputBar from "../../Components/Forminput/inputBar";
 import Alert from "../../Components/Alerts/alert";
 import Authentication from "../../Components/Authentication/authentication";
 import { checkFieldValidation } from "../../Utils/formValidation";
+import InputBar from "../../Components/Forminput/inputBar";
 
 const defaultFormFields = {
   email: "",
