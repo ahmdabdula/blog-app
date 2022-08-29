@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import Login from "../login/login";
-import Signup from "../../components/signup/signup";
 import { Outlet, useOutletContext } from "react-router-dom";
-import Bkg from "../../images/authentication-bkg.png";
+import BgImg from "../../Images/login-signup-bg.png";
 
 const Authentication = () => {
   const [heading, SetHeading] = useState<string>("Login");
@@ -15,7 +12,7 @@ const Authentication = () => {
         </h1>
         <img
           className="brightness-75 bg-blend-darken h-full w-full"
-          src={Bkg}
+          src={BgImg}
           alt=""
         />
       </div>

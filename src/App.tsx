@@ -1,9 +1,9 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
-import Authentication from "./routes/authentication/authentication";
-import Login from "./components/login/login";
-import Signup from "./components/signup/signup";
+import Authentication from "./Routes/Authentication/authentication";
+import Login from "./Routes/login/Login";
+import Signup from "./Routes/signup/Signup";
 
 const App = () => {
   return (

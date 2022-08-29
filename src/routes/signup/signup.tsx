@@ -1,16 +1,14 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Button from "../button/button";
-import InputBar from "../forminput/inputbar";
 import { useOutletContext } from "react-router-dom";
-import { useUser } from "../../routes/authentication/authentication";
-import { checkFieldValidation } from "../../utils/formValidation";
-import Alert from "../alerts/alert";
+import { checkFieldValidation } from "../../Utils/formValidation";
 import {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
-} from "../../utils/firebase/firebase.utils";
-import { User } from "firebase/auth";
+} from "../../Utils/Firebase/firebase.utils";
+import Button from "../../Components/Button/button";
+import Alert from "../../Components/Alerts/alert";
+import InputBar from "../../Components/Forminput/inputBar";
 
 const defaultFormFields = {
   email: "",
@@ -86,7 +84,7 @@ const Signup = () => {
       </a>
       <InputBar
         placeholder="Full Name"
-        valid={formValidation.name}
+        isValid={formValidation.name}
         type="text"
         onChange={handleChange}
         required
@@ -96,7 +94,7 @@ const Signup = () => {
 
       <InputBar
         placeholder="Email Address"
-        valid={formValidation.email}
+        isValid={formValidation.email}
         type="email"
         onChange={handleChange}
         required
@@ -107,7 +105,7 @@ const Signup = () => {
       <InputBar
         placeholder="Password"
         type="password"
-        valid={formValidation.password}
+        isValid={formValidation.password}
         required
         onChange={handleChange}
         name="password"
@@ -117,7 +115,7 @@ const Signup = () => {
       <InputBar
         placeholder="Confirm Password"
         type="password"
-        valid={password === confirmPassword && password.length > 0}
+        isValid={password === confirmPassword && password.length > 0}
         required
         onChange={handleChange}
         name="confirmPassword"

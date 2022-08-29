@@ -1,10 +1,10 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
-import Button from "../../Components/button/button";
-import InputBar from "../../Components/forminput/inputbar";
-import { checkFieldValidation } from "../../utils/formValidation";
-import Alert from "../../Components/alerts/alert";
-import { signInAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
+import Button from "../../Components/Button/button";
+import InputBar from "../../Components/Forminput/inputBar";
+import { checkFieldValidation } from "../../Utils/formValidation";
+import Alert from "../../Components/Alerts/alert";
+import { signInAuthUserWithEmailAndPassword } from "../../Utils/Firebase/firebase.utils";
 const defaultFormFields = {
   email: "",
   password: "",
@@ -65,7 +65,7 @@ const Login = () => {
       <InputBar
         placeholder="Email Address"
         type="email"
-        valid={formValidation.email}
+        isValid={formValidation.email}
         onChange={handleChange}
         required
         name="email"
@@ -74,7 +74,7 @@ const Login = () => {
 
       <InputBar
         placeholder="Password"
-        valid={password.length > 0}
+        isValid={password.length > 0}
         type="password"
         required
         onChange={handleChange}
