@@ -63,6 +63,7 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
           email: user.email as string,
         };
         setCurrentUser(userContext);
+        window.localStorage.setItem("currentUser", JSON.stringify(userContext));
       }
     });
 

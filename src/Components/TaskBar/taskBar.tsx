@@ -13,6 +13,7 @@ const TaskBar = () => {
     try {
       await signOutUser();
       dispatch({ type: USER_ACTION_TYPES.SET_CURRENT_USER, payload: null });
+      window.localStorage.setItem("currentUser", "");
     } catch {}
   };
   return (
@@ -27,18 +28,18 @@ const TaskBar = () => {
             <h1 className="text-lg px-2 hidden sm:block lg:hidden">{name}</h1>
           </div>
           <div className="my-5 flex lg:flex-col items-center justify-center  w-2/6 lg:w-full">
-            <div>
+            <button>
               <FaSistrix className="text-4xl text-primary font-bold" />
-            </div>
+            </button>
             <h1 className="text-lg px-2 hidden sm:block">search</h1>
           </div>
           <div className="my-5 flex lg:flex-col items-center justify-center  w-2/6 lg:w-full">
-            <div>
+            <button>
               <AiOutlinePlusCircle className="text-4xl text-primary font-bold" />
-            </div>
+            </button>
             <h1 className="text-lg px-2 hidden sm:block ">create</h1>
           </div>
-          <div className="flex lg:flex-col items-center h-full justify-end m-auto w-2/6 lg:w-full">
+          <div className="flex lg:flex-col items-center h-full justify-end m-auto w-2/6 lg:w-full hidden lg:flex">
             <button onClick={signOut}>
               <AiOutlineLogout className="text-4xl text-primary font-bold" />
             </button>
