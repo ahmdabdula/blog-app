@@ -1,7 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../Components/Button/button";
-import InputBar from "../../Components/Forminput/inputBar";
 import Alert from "../../Components/Alerts/alert";
 import Authentication from "../../Components/Authentication/authentication";
 import { checkFieldValidation } from "../../Utils/formValidation";
@@ -9,6 +8,7 @@ import {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
 } from "../../Utils/Firebase/firebase";
+import InputBar from "../../Components/forminput/inputBar";
 const defaultFormFields = {
   email: "",
   password: "",
