@@ -9,7 +9,7 @@ const TaskBar = () => {
   const nameInitial = name ? name[0] : "";
   return (
     <>
-      <div className="z-1 bg-white fixed w-full h-24 blur-xl bottom-0 lg:hidden"></div>
+      <div className="z-1 bg-white fixed w-full h-24 blur-xl bottom-0 lg:hidden" />
       <div className="z-100 fixed lg:static bg-dark lg:w-24 w-full lg:h-full h-16 lg:h-full bottom-0">
         <div className="lg:flex-col flex flex-row lg:items-start items-center lg:justify-start sm:justify-evenly justify-around w-full px-4 lg:py-6 text-white h-full text-center font-lexend ">
           <div className="my-5 flex lg:flex-col items-center justify-center w-2/6 lg:w-full">

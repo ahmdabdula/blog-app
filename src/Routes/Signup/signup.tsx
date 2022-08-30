@@ -89,7 +89,7 @@ const Signup = () => {
           required
           name="name"
           value={name}
-        ></InputBar>
+        />
 
         <InputBar
           placeholder="Email Address"
@@ -99,7 +99,7 @@ const Signup = () => {
           required
           name="email"
           value={email}
-        ></InputBar>
+        />
 
         <InputBar
           placeholder="Password"
@@ -109,7 +109,7 @@ const Signup = () => {
           onChange={handleChange}
           name="password"
           value={password}
-        ></InputBar>
+        />
 
         <InputBar
           placeholder="Confirm Password"
@@ -119,13 +119,13 @@ const Signup = () => {
           onChange={handleChange}
           name="confirmPassword"
           value={confirmPassword}
-        ></InputBar>
+        />
 
         <Button
           disabled={!validateForm()}
           onPress={handleSubmit}
           name="SUBMIT"
-        ></Button>
+        />
 
         <Link to={"/login"}>
           <h1 className="text-xl hover:opacity-75">
@@ -134,9 +134,7 @@ const Signup = () => {
           </h1>
         </Link>
 
-        {alertPop && (
-          <Alert closeAlert={setAlertPop} message={alertMessage}></Alert>
-        )}
+        {alertPop && <Alert closeAlert={setAlertPop} message={alertMessage} />}
       </div>
     </Authentication>
   );

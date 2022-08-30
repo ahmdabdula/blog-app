@@ -5,6 +5,7 @@ import Home from "./Routes/HomePage/homePage";
 import Login from "./Routes/Login/login";
 import Signup from "./Routes/Signup/signup";
 import ProtectedRoutes from "./Utils/ProtectedRoute/protectedRoute";
+import BlogPage from "./Routes/BlogPage/blogPage";
 
 const App = () => {
   const { currentUser } = useContext(UserContext);
@@ -13,7 +14,8 @@ const App = () => {
       <Route path="login" element={<Login />} />
       <Route path="signup" element={<Signup />} />
       <Route element={<ProtectedRoutes currentUser={currentUser} />}>
-        <Route path="/" element={<Home />}></Route>
+        <Route path="/" element={<Home />} />
+        <Route path=":id" element={<BlogPage />} />
       </Route>
     </Routes>
   );
