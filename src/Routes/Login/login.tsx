@@ -6,9 +6,9 @@ import Authentication from "../../Components/Authentication/authentication";
 import { checkFieldValidation } from "../../Utils/formValidation";
 import { signInAuthUserWithEmailAndPassword } from "../../Utils/Firebase/firebase";
 import { UserContext, USER_ACTION_TYPES } from "../../Context/userContext";
-import InputBar from "../../Components/forminput/inputBar";
 import Spinner from "../../Components/Spinner/spinner";
 import { UserCredential } from "firebase/auth";
+import InputBar from "../../Components/Forminput/inputbar";
 
 const defaultFormFields = {
   email: "",
