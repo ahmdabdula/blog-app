@@ -1,12 +1,14 @@
 import { ChangeEvent, useState, useContext } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Button from "../../Components/Button/button";
 import Alert from "../../Components/Alerts/alert";
 import Authentication from "../../Components/Authentication/authentication";
 import { checkFieldValidation } from "../../Utils/formValidation";
 import { signInAuthUserWithEmailAndPassword } from "../../Utils/Firebase/firebase";
-import { UserContext } from "../../Context/userContext";
+import { UserContext, USER_ACTION_TYPES } from "../../Context/userContext";
 import InputBar from "../../Components/forminput/inputBar";
+import Spinner from "../../Components/Spinner/spinner";
+import { UserCredential } from "firebase/auth";
 
 const defaultFormFields = {
   email: "",
@@ -24,20 +26,35 @@ const Login = () => {
   const [alertPop, setAlertPop] = useState<boolean>(false);
   const [formValidation, setFormValidation] = useState(defaultFormValidation);
   const { email, password } = formFields;
-  const { currentUser } = useContext(UserContext);
-
-  let navigate = useNavigate();
+  const { currentUser, dispatch } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
 
   const resetForm = () => {
     setFormFields(defaultFormFields);
   };
 
+  const setContext = (credentials: UserCredential) => {
+    const user = {
+      name: credentials?.user?.displayName as string,
+      email: email,
+      uid: credentials?.user?.uid as string,
+    };
+    dispatch({ type: USER_ACTION_TYPES.SET_CURRENT_USER, payload: user });
+  };
+
   const handleSubmit = async () => {
     try {
-      await signInAuthUserWithEmailAndPassword(email, password);
-      navigate("/");
+      setLoading(true);
+      const credentials = await signInAuthUserWithEmailAndPassword(
+        email,
+        password
+      );
+      setLoading(false);
       resetForm();
+      credentials && setContext(credentials);
     } catch (error: unknown) {
+      console.log(error);
+      setLoading(false);
       setAlertPop(true);
       setAlertError(error as string);
     }
@@ -90,11 +107,14 @@ const Login = () => {
               value={password}
             />
 
-            <Button
-              onPress={handleSubmit}
-              disabled={!validateForm()}
-              name="LOGIN"
-            />
+            <div className="flex items-center">
+              <Button
+                onPress={handleSubmit}
+                disabled={!validateForm()}
+                name="LOGIN"
+              />
+              <Spinner visible={loading} />
+            </div>
 
             <div>
               <a className="text-xl hover:opacity-75">Don't have an account?</a>

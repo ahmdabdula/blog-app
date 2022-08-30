@@ -1,7 +1,6 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../Components/Button/button";
-
 import Alert from "../../Components/Alerts/alert";
 import Authentication from "../../Components/Authentication/authentication";
 import { checkFieldValidation } from "../../Utils/formValidation";
@@ -10,6 +9,10 @@ import {
   createUserDocumentFromAuth,
 } from "../../Utils/Firebase/firebase";
 import InputBar from "../../Components/forminput/inputBar";
+import Spinner from "../../Components/Spinner/spinner";
+import { User } from "firebase/auth";
+import { UserContext, USER_ACTION_TYPES } from "../../Context/userContext";
+
 const defaultFormFields = {
   email: "",
   password: "",
@@ -29,6 +32,8 @@ const Signup = () => {
   const [alertMessage, setAlertError] = useState<string>("");
   const [alertPop, setAlertPop] = useState<boolean>(false);
   const { email, password, name, confirmPassword } = formFields;
+  const [loading, setLoading] = useState(false);
+  const { dispatch } = useContext(UserContext);
 
   let navigate = useNavigate();
 
@@ -43,7 +48,17 @@ const Signup = () => {
     setAlertPop(!state);
   };
 
+  const setContext = (credentials: User) => {
+    const user = {
+      name: name,
+      email: email,
+      uid: credentials.uid as string,
+    };
+    dispatch({ type: USER_ACTION_TYPES.SET_CURRENT_USER, payload: user });
+  };
+
   const handleSubmit = async () => {
+    setLoading(true);
     try {
       const userCredential = await createAuthUserWithEmailAndPassword(
         email,
@@ -52,10 +67,13 @@ const Signup = () => {
       );
       if (userCredential) {
         await createUserDocumentFromAuth(userCredential, { name });
+        setContext(userCredential);
       }
       resetForm();
+      setLoading(false);
       navigate("/login");
     } catch (error: unknown) {
+      setLoading(false);
       setAlertPop(true);
       setAlertError(error as string);
     }
@@ -122,11 +140,14 @@ const Signup = () => {
           value={confirmPassword}
         />
 
-        <Button
-          disabled={!validateForm()}
-          onPress={handleSubmit}
-          name="SUBMIT"
-        />
+        <div className="flex items-center">
+          <Button
+            disabled={!validateForm()}
+            onPress={handleSubmit}
+            name="SUBMIT"
+          />
+          <Spinner visible={loading} />
+        </div>
 
         <Link to={"/login"}>
           <h1 className="text-xl hover:opacity-75">

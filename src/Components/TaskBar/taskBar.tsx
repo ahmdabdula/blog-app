@@ -1,12 +1,20 @@
 import { FaSistrix } from "react-icons/fa";
-import { AiOutlinePlusCircle } from "react-icons/ai";
+import { AiOutlinePlusCircle, AiOutlineLogout } from "react-icons/ai";
 import { useContext } from "react";
-import { UserContext } from "../../Context/userContext";
+import { UserContext, USER_ACTION_TYPES } from "../../Context/userContext";
+import { signOutUser } from "../../Utils/Firebase/firebase";
 
 const TaskBar = () => {
-  const { currentUser } = useContext(UserContext);
+  const { currentUser, dispatch } = useContext(UserContext);
   const name = currentUser ? currentUser.name : "";
   const nameInitial = name ? name[0] : "";
+
+  const signOut = async () => {
+    try {
+      await signOutUser();
+      dispatch({ type: USER_ACTION_TYPES.SET_CURRENT_USER, payload: null });
+    } catch {}
+  };
   return (
     <>
       <div className="z-1 bg-white fixed w-full h-24 blur-xl bottom-0 lg:hidden" />
@@ -29,6 +37,12 @@ const TaskBar = () => {
               <AiOutlinePlusCircle className="text-4xl text-primary font-bold" />
             </div>
             <h1 className="text-lg px-2 hidden sm:block ">create</h1>
+          </div>
+          <div className="flex lg:flex-col items-center h-full justify-end m-auto w-2/6 lg:w-full">
+            <button onClick={signOut}>
+              <AiOutlineLogout className="text-4xl text-primary font-bold" />
+            </button>
+            <h1 className="text-lg px-2 hidden sm:block ">logout</h1>
           </div>
         </div>
       </div>

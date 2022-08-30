@@ -7,6 +7,7 @@ import {
   updateProfile,
   NextOrObserver,
   onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 import { getFirestore, getDoc, setDoc, doc } from "firebase/firestore";
 
@@ -17,11 +18,6 @@ const firebaseConfig = {
   storageBucket: "blog-app-90794.appspot.com",
   messagingSenderId: "979226588983",
   appId: "1:979226588983:web:6d1e0778e93992e2e74cb2",
-};
-
-type userAuthType = {
-  uid: string;
-  email: string;
 };
 
 type errorType = {
@@ -119,3 +115,5 @@ export const signInAuthUserWithEmailAndPassword = async (
 
 export const onAuthStateChangedListener = (callback: NextOrObserver<User>) =>
   onAuthStateChanged(auth, callback);
+
+export const signOutUser = async () => await signOut(auth);
