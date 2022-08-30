@@ -4,8 +4,9 @@ import Button from "../../Components/Button/button";
 import Alert from "../../Components/Alerts/alert";
 import Authentication from "../../Components/Authentication/authentication";
 import { checkFieldValidation } from "../../Utils/formValidation";
-import InputBar from "../../Components/forminput/inputBar";
+import InputBar from "../../Components/Forminput/inputBar";
 import { signInAuthUserWithEmailAndPassword } from "../../Utils/Firebase/firebase.utils";
+import Spinner from "../../Components/Spinner/spinner";
 const defaultFormFields = {
   email: "",
   password: "",
@@ -22,6 +23,7 @@ const Login = () => {
   const [alertPop, setAlertPop] = useState<boolean>(false);
   const [formValidation, setFormValidation] = useState(defaultFormValidation);
   const { email, password } = formFields;
+  const [loading, setLoading] = useState(false);
 
   const resetForm = () => {
     setFormFields(defaultFormFields);
@@ -29,10 +31,13 @@ const Login = () => {
 
   const handleSubmit = async () => {
     try {
+      setLoading(true);
       await signInAuthUserWithEmailAndPassword(email, password);
       console.log("logged in");
+      setLoading(false);
       resetForm();
     } catch (error: unknown) {
+      setLoading(false);
       setAlertPop(true);
       setAlertError(error as string);
     }
@@ -69,7 +74,7 @@ const Login = () => {
           required
           name="email"
           value={email}
-        ></InputBar>
+        />
 
         <InputBar
           placeholder="Password"
@@ -79,13 +84,16 @@ const Login = () => {
           onChange={handleChange}
           name="password"
           value={password}
-        ></InputBar>
+        />
 
-        <Button
-          onPress={handleSubmit}
-          disabled={!validateForm()}
-          name="LOGIN"
-        ></Button>
+        <div className="flex items-center">
+          <Button
+            onPress={handleSubmit}
+            disabled={!validateForm()}
+            name="LOGIN"
+          />
+          <Spinner visible={loading} />
+        </div>
 
         <div>
           <a className="text-xl hover:opacity-75">Don't have an account?</a>
@@ -93,7 +101,7 @@ const Login = () => {
             Sign-up
           </Link>
           {alertPop && (
-            <Alert closeAlert={setAlertPop} message={alertMessage}></Alert>
+            <Alert closeAlert={setAlertPop} message={alertMessage} />
           )}
         </div>
       </div>
