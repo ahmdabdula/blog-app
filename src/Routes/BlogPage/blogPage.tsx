@@ -6,6 +6,8 @@ const BlogPage = () => {
   const location = useLocation();
   const state = location?.state as { path: string; blog: blogType };
   const { title, author, content, date } = state.blog;
+  const dateString = date.toDateString();
+  const splitDate = dateString?.split(" ", 4);
   const navigate = useNavigate();
 
   const handleBackClick = () => {
@@ -35,7 +37,7 @@ const BlogPage = () => {
             written by {author}
           </h1>
           <h1 className="font-lexend text:xl sm:text-2xl font-light text-secondary">
-            on {date}
+            on {`${splitDate[2]} ${splitDate[1]}  ${splitDate[3]}`}
           </h1>
           <p className="font-lexend pt-4 text-lg pb-6 sm:text-3xl  font-light blog-content first-letter:text-8xl first-letter:ml-5 first-letter:font-medium">
             {content}

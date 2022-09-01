@@ -1,20 +1,22 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, Navigate } from "react-router-dom";
 
 export type blogType = {
   title: string;
-  date: string;
+  date: Date;
   author: string;
   content: string;
   id: string;
+  userId: string;
 };
 
 const Blog = ({ title, date, author, content, id }: blogType) => {
   const location = useLocation();
-  const splitDate = date.split(" ", 3);
+  const dateString = date.toDateString();
+  const splitDate = dateString?.split(" ", 4);
   return (
     <div className="my-10 md:pr-10 w-5/6">
       <h1 className="font-lexend pb-6 font-black text:2xl sm:text-4xl hidden sm:block uppercase">
-        {`${splitDate[0]} ${splitDate[1]}`}
+        {`${splitDate[2]} ${splitDate[1]}`}
       </h1>
       <h1 className="font-dmSerif pb-6 text-3xl sm:text-5xl text-primary">
         {title}
@@ -23,7 +25,7 @@ const Blog = ({ title, date, author, content, id }: blogType) => {
         {content.length > 150 ? content.slice(0, 150) : content}
         {content.length > 150 && (
           <Link
-            to={id}
+            to={id ? "/" + id : ""}
             state={{
               path: location?.pathname,
               blog: { title, date, author, content, id },
@@ -35,10 +37,10 @@ const Blog = ({ title, date, author, content, id }: blogType) => {
       </h1>
       <div className="flex justify-between">
         <h1 className="font-lexend pb-6 font-black text:xl sm:text-4xl block sm:hidden">
-          {date}
+          {`${splitDate[2]} ${splitDate[1]}  ${splitDate[3]}`}
         </h1>
         <h1 className="font-lexend text:xl sm:text-2xl font-light text-secondary">
-          {author}
+          @{author}
         </h1>
       </div>
     </div>

@@ -9,7 +9,17 @@ import {
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
-import { getFirestore, getDoc, setDoc, doc } from "firebase/firestore";
+import {
+  getFirestore,
+  getDoc,
+  setDoc,
+  doc,
+  collection,
+  query,
+  getDocs,
+} from "firebase/firestore";
+import { blogType } from "../../Components/Blog/blog";
+import { UserType } from "../../Context/userContext";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAyA6oFDi1rqvhFYhNy1PbLLD4QW8Wf3Xs",
@@ -92,6 +102,58 @@ export const createUserDocumentFromAuth = async (
       await setDoc(userDocRef, {
         email,
         createdAt,
+        ...additionalInformation,
+      });
+    } catch (error: unknown) {
+      throw (error as errorType).message;
+    }
+  }
+};
+
+export const getBlogs = async () => {
+  const collectionRef = collection(db, "blogs");
+  const q = query(collectionRef);
+  const querySnapshot = await getDocs(q);
+  const blogs: blogType[] = [];
+  querySnapshot.docs.map((docSnapshot) => {
+    const { title, content, date, userId, author, id } = docSnapshot.data();
+    blogs.push({
+      title,
+      content,
+      date: date.toDate(),
+      author,
+      userId,
+      id,
+    });
+    return blogs;
+  }, {});
+
+  return blogs;
+};
+
+export const createBlog = async (
+  user: UserType,
+  content: string,
+  title: string,
+  additionalInformation = {}
+) => {
+  const id = "id" + new Date().getTime();
+  const userDocRef = doc(db, "blogs", id);
+
+  const userSnapshot = await getDoc(userDocRef);
+
+  if (!userSnapshot.exists()) {
+    const { email, uid } = user;
+    const date = new Date();
+
+    try {
+      await setDoc(userDocRef, {
+        author: email.split("@")[0],
+        date,
+        title,
+        content,
+        userId: uid,
+        id,
         ...additionalInformation,
       });
     } catch (error: unknown) {
