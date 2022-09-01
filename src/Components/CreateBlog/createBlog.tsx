@@ -11,21 +11,26 @@ import Button from "../Button/button";
 import InputBar from "../Forminput/inputbar";
 import Spinner from "../Spinner/spinner";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { createBlog } from "../../Utils/Firebase/firebase";
+import { createBlog, editBlog, getBlogs } from "../../Utils/Firebase/firebase";
 import { UserContext } from "../../Context/userContext";
 import GenericAlert from "../Alerts/genericAlert";
-const defaultFormFields = {
-  title: "",
-  content: "",
-};
+import { blogType } from "../Blog/blog";
+import { BlogsContext, BLOG_ACTION_TYPES } from "../../Context/blogContext";
 
 const CreateBlog = ({
   isOpen,
   setOpen,
+  blog,
 }: {
   isOpen: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  blog: blogType | null;
 }) => {
+  const defaultFormFields = {
+    title: blog ? blog.title : "",
+    content: blog ? blog.content : "",
+  };
+
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { title, content } = formFields;
   const [loading, setLoading] = useState(false);
@@ -34,13 +39,13 @@ const CreateBlog = ({
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("");
   const matches = useMediaQuery("(min-width:600px)");
-
+  const { dispatch } = useContext(BlogsContext);
   let border: string;
   content.length > 0
     ? (border = "border-primary")
     : (border = "border-secondary");
 
-  const contentStyle = {
+  const modalStyle = {
     content: {
       borderRadius: "0px",
       width: matches ? "60%" : "auto",
@@ -53,6 +58,7 @@ const CreateBlog = ({
       left: "0",
     },
   };
+
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -67,12 +73,19 @@ const CreateBlog = ({
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      currentUser && (await createBlog(currentUser, content, title));
+      if (blog) {
+        await editBlog(content, title, blog.id);
+        setAlertMessage("Blog Edited");
+      } else {
+        currentUser && (await createBlog(currentUser, content, title));
+        setAlertMessage("New Blog Added");
+      }
+      const blogs = await getBlogs();
+      dispatch({ type: BLOG_ACTION_TYPES.SET_BLOGS, payload: blogs });
       setLoading(false);
       resetFields();
-      setAlertMessage("New Blog Added");
       setAlertType("success");
       setAlert(true);
     } catch (error: unknown) {
@@ -84,12 +97,12 @@ const CreateBlog = ({
   };
 
   const resetFields = () => {
-    setFormFields(defaultFormFields);
+    setFormFields({ title: "", content: "" });
   };
 
   return (
     <div>
-      <Modal style={contentStyle} isOpen={isOpen}>
+      <Modal style={modalStyle} isOpen={isOpen}>
         {alert && (
           <GenericAlert
             message={alertMessage}
@@ -109,7 +122,7 @@ const CreateBlog = ({
               <div>
                 <button
                   onClick={handleClose}
-                  className="text-xl sm:text-3xl text-dark"
+                  className="text-xl sm:text-3xl text-dark hover:scale-105"
                 >
                   <AiOutlineCloseCircle />
                 </button>

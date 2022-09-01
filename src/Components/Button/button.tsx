@@ -19,7 +19,7 @@ const Button: FC<ButtonProps> = ({ name, ...otherProps }) => {
       {...otherProps}
       className={"lg:w-2/6 w-full p-5 text-white my-6 " + backgroundStyle}
     >
-      <h1 className="font-lexend lg:text-2xl text-xl">{name}</h1>
+      <h1 className="font-lexend lg:text-xl text-lg">{name}</h1>
     </button>
   );
 };

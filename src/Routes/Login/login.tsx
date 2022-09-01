@@ -1,5 +1,5 @@
 import { ChangeEvent, useState, useContext } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../Components/Button/button";
 import Alert from "../../Components/Alerts/alert";
 import Authentication from "../../Components/Authentication/authentication";
@@ -28,6 +28,7 @@ const Login = () => {
   const { email, password } = formFields;
   const { currentUser, dispatch } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const resetForm = () => {
     setFormFields(defaultFormFields);
@@ -52,6 +53,7 @@ const Login = () => {
       setLoading(false);
       resetForm();
       credentials && setContext(credentials);
+      navigate("/");
     } catch (error: unknown) {
       console.log(error);
       setLoading(false);
@@ -78,57 +80,53 @@ const Login = () => {
   };
 
   return (
-    <>
-      {currentUser ? (
-        <Navigate to="/" />
-      ) : (
-        <Authentication>
-          <div className="relative">
-            <a className="font-light text-3xl text-secondary">
-              Let's log you in quickly
-            </a>
-            <InputBar
-              placeholder="Email Address"
-              type="email"
-              isValid={formValidation.email}
-              onChange={handleChange}
-              required
-              name="email"
-              value={email}
-            />
+    <Authentication>
+      <div>
+        <a className="font-light text-2xl text-secondary">
+          Let's log you in quickly
+        </a>
+        <div className="h-6">
+          {alertPop && (
+            <Alert closeAlert={setAlertPop} message={alertMessage} />
+          )}
+        </div>
+        <InputBar
+          placeholder="Email Address"
+          type="email"
+          isValid={formValidation.email}
+          onChange={handleChange}
+          required
+          name="email"
+          value={email}
+        />
 
-            <InputBar
-              placeholder="Password"
-              isValid={password.length > 0}
-              type="password"
-              required
-              onChange={handleChange}
-              name="password"
-              value={password}
-            />
+        <InputBar
+          placeholder="Password"
+          isValid={password.length > 0}
+          type="password"
+          required
+          onChange={handleChange}
+          name="password"
+          value={password}
+        />
 
-            <div className="flex items-center">
-              <Button
-                onPress={handleSubmit}
-                disabled={!validateForm()}
-                name="LOGIN"
-              />
-              <Spinner visible={loading} />
-            </div>
+        <div className="flex items-center">
+          <Button
+            onPress={handleSubmit}
+            disabled={!(validateForm() && !loading)}
+            name="LOGIN"
+          />
+          <Spinner visible={loading} />
+        </div>
 
-            <div>
-              <a className="text-xl hover:opacity-75">Don't have an account?</a>
-              <Link className="text-xl text-primary px-2 " to={"/signup"}>
-                Sign-up
-              </Link>
-              {alertPop && (
-                <Alert closeAlert={setAlertPop} message={alertMessage} />
-              )}
-            </div>
-          </div>
-        </Authentication>
-      )}
-    </>
+        <Link to={"/signup"}>
+          <h1 className="text-xl hover:opacity-75">
+            Don’t have an account?
+            <a className="text-primary px-2 ">Sign-up</a>
+          </h1>
+        </Link>
+      </div>
+    </Authentication>
   );
 };
 

@@ -22,7 +22,7 @@ const SearchBar = ({
   return (
     <>
       {search && (
-        <div className="fixed w-5/6 md:w-3/6 inset-x-0 mx-auto top-2">
+        <div className="fixed w-5/6 md:w-3/6 inset-x-0 mx-auto top-2 drop-shadow-lg">
           <InputBar
             placeholder="Search"
             type="text"

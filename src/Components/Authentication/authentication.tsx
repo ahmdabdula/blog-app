@@ -5,7 +5,9 @@ import BgImage from "../../Images/login-signup-bg.png";
 const Authentication = (props: PropsWithChildren) => {
   const location = useLocation();
   const path = location.pathname.slice(1, location.pathname.length);
-  const [pathHeading, SetHeading] = useState<string>(path);
+  const [pathHeading, SetHeading] = useState<string>(
+    path === "signup" ? "Sign Up" : "Login"
+  );
   return (
     <div className="flex w-full h-full">
       <div className="relative w-2/6 h-full lg:block hidden">
@@ -18,9 +20,9 @@ const Authentication = (props: PropsWithChildren) => {
           alt=""
         />
       </div>
-      <div className="flex lg:w-4/6 lg:text-left justify-center items-center h-full sm:w-6/6 text-center ">
-        <div className="w-5/6">
-          <h1 className="font-dmSerif lg:text-6xl text-4xl pb-5">Welcome</h1>
+      <div className="flex lg:w-4/6 lg:text-left justify-center items-center h-full sm:w-full text-center ">
+        <div className="w-5/6 sm:w-4/6">
+          <h1 className="font-dmSerif lg:text-5xl text-4xl pb-2">Welcome</h1>
           {props.children}
         </div>
       </div>

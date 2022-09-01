@@ -9,6 +9,10 @@ const GenericAlert = ({
   closeAlert: Dispatch<SetStateAction<boolean>>;
   type: string;
 }) => {
+  const autoCloseAlert = setTimeout(() => {
+    closeAlert(false);
+  }, 2000);
+
   const alertStyle =
     type === "error"
       ? "bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"

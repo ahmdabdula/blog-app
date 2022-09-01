@@ -17,6 +17,7 @@ import {
   collection,
   query,
   getDocs,
+  deleteDoc,
 } from "firebase/firestore";
 import { blogType } from "../../Components/Blog/blog";
 import { UserType } from "../../Context/userContext";
@@ -55,9 +56,9 @@ const generateErrorMessage = (code: string) => {
     case "auth/email-already-in-use":
       return "user with this email already exists";
     case "auth/wrong-password":
-      return "password is incorrect";
+      return "Incorrect username or password";
     case "auth/user-not-found":
-      return "user with this email does not exist";
+      return "Incorrect username or password";
     default:
       return "error occurred";
   }
@@ -129,6 +130,36 @@ export const getBlogs = async () => {
   }, {});
 
   return blogs;
+};
+
+export const editBlog = async (content: string, title: string, id: string) => {
+  const userDocRef = doc(db, "blogs", id);
+  const userSnapshot = await getDoc(userDocRef);
+
+  if (userSnapshot.exists()) {
+    try {
+      await setDoc(
+        userDocRef,
+        {
+          title,
+          content,
+          id,
+        },
+        { merge: true }
+      );
+    } catch (error: unknown) {
+      throw (error as errorType).message;
+    }
+  }
+};
+
+export const deletBlog = async (id: string) => {
+  const userDocRef = doc(db, "blogs", id);
+  try {
+    await deleteDoc(userDocRef);
+  } catch (error: unknown) {
+    throw (error as errorType).message;
+  }
 };
 
 export const createBlog = async (

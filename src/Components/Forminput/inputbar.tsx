@@ -15,7 +15,7 @@ const InputBar: FC<FormInputProps> = ({ placeholder, ...otherProps }) => {
     <input
       autoFocus
       className={
-        "w-full border-2 p-5 rounded-none mt-7 focus:outline-none " + border
+        "w-full border-2 p-5 rounded-none mt-6 focus:outline-none " + border
       }
       placeholder={placeholder}
       {...otherProps}

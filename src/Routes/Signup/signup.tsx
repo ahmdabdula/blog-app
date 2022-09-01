@@ -71,7 +71,7 @@ const Signup = () => {
       }
       resetForm();
       setLoading(false);
-      navigate("/login");
+      navigate("/");
     } catch (error: unknown) {
       setLoading(false);
       setAlertPop(true);
@@ -97,9 +97,14 @@ const Signup = () => {
   return (
     <Authentication>
       <div>
-        <a className="font-light text-3xl text-secondary">
+        <a className="font-light text-2xl text-secondary">
           Let's sign you up quickly
         </a>
+        <div className="h-6">
+          {alertPop && (
+            <Alert closeAlert={setAlertPop} message={alertMessage} />
+          )}
+        </div>
         <InputBar
           placeholder="Full Name"
           isValid={formValidation.name}
@@ -142,7 +147,7 @@ const Signup = () => {
 
         <div className="flex items-center">
           <Button
-            disabled={!validateForm()}
+            disabled={!(validateForm() && !loading)}
             onPress={handleSubmit}
             name="SUBMIT"
           />
@@ -155,8 +160,6 @@ const Signup = () => {
             <a className="text-primary px-2 ">Log-in</a>
           </h1>
         </Link>
-
-        {alertPop && <Alert closeAlert={setAlertPop} message={alertMessage} />}
       </div>
     </Authentication>
   );
