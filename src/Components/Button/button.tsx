@@ -2,6 +2,7 @@ import { ButtonHTMLAttributes, FC } from "react";
 
 type ButtonProps = {
   name: string;
+  onPress: () => void;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button: FC<ButtonProps> = ({ name, ...otherProps }) => {
@@ -12,6 +13,9 @@ const Button: FC<ButtonProps> = ({ name, ...otherProps }) => {
 
   return (
     <button
+      onClick={() => {
+        otherProps.onPress();
+      }}
       {...otherProps}
       className={"lg:w-2/6 w-full p-5 text-white my-6 " + backgroundStyle}
     >

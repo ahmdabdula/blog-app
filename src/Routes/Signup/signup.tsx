@@ -1,10 +1,12 @@
 import { ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../../Components/Button/button";
+import InputBar from "../../Components/Forminput/inputBar";
 import Alert from "../../Components/Alerts/alert";
 import Authentication from "../../Components/Authentication/authentication";
 import { checkFieldValidation } from "../../Utils/formValidation";
-import InputBar from "../../Components/Forminput/inputBar";
+import { createAuthUserWithEmailAndPassword } from "../../Utils/Firebase/firebase.utils";
+import Spinner from "../../Components/Spinner/spinner";
 
 const defaultFormFields = {
   email: "",
@@ -25,12 +27,31 @@ const Signup = () => {
   const [alertMessage, setAlertError] = useState<string>("");
   const [alertPop, setAlertPop] = useState<boolean>(false);
   const { email, password, name, confirmPassword } = formFields;
+  const [loading, setLoading] = useState(false);
+
+  const resetForm = () => {
+    setFormFields(defaultFormFields);
+  };
 
   const validateField = (name: string, value: string) => {
     const { state, message } = checkFieldValidation(name, value);
     setAlertError(message);
     setFormValidation({ ...formValidation, [name]: state });
     setAlertPop(!state);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      await createAuthUserWithEmailAndPassword(email, password);
+      console.log("User Created");
+      resetForm();
+      setLoading(false);
+    } catch (error: unknown) {
+      setLoading(false);
+      setAlertPop(true);
+      setAlertError(error as string);
+    }
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -94,8 +115,14 @@ const Signup = () => {
           value={confirmPassword}
         />
 
-        <Button disabled={!validateForm()} name="SUBMIT" />
-
+        <div className="flex items-center">
+          <Button
+            disabled={!validateForm()}
+            onPress={handleSubmit}
+            name="SUBMIT"
+          />
+          <Spinner visible={loading} />
+        </div>
         <Link to={"/login"}>
           <h1 className="text-xl hover:opacity-75">
             Already have an account?
